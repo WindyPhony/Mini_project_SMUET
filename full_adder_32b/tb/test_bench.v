@@ -1,47 +1,43 @@
 `timescale 1ns/1ps
 
-module full_adder_tb();
-    reg a;
-    reg b;
+module test_bench();
+    reg [31:0]a;
+    reg [31:0]b;
 
-    wire sum;
-    reg new_sum; // expected sum 
+    wire [31:0]sum;
+    reg [31:0]new_sum; // expected sum 
     
-    reg cntf = 0; // dem so test case failed
+    integer cntf = 0; // dem so test case failed
 
     top dut (.*);
 
     initial begin
-        repeat(1000 ) begin 
-            stimulus();
+        a= 0;
+        b=0;
+        #10;
+
+        repeat(20) begin 
             #10;
+            a= $random;
+            b= $random;
+            new_sum = a +b; 
+            #1;
             if (new_sum == sum)begin 
                     $display("------------------------------Testcase Passed-------------------------------");
-                    $display("a = %b, b= %b, sum = %b, new_sum = %b", a, b, sum, new_sum);
+                    $display("a = %h, b= %h, sum = %h, new_sum = %h", a, b, sum, new_sum);
                     $display("----------------------------------------------------------------------------");
             end else begin 
                     $display("------------------------------Testcase Failed-------------------------------");
-                    $display("a = %b, b= %b, sum = %b, new_sum = %b,", a, b, sum, new_sum);
+                    $display("a = %h, b= %h, sum = %h, new_sum = %h,", a, b, sum, new_sum);
                     $display("----------------------------------------------------------------------------");
                     cntf = cntf +1;
             end
-
 	    end
 
         $display("----------------------------------------------------------------------------");
         $display("So testcase failed : %d", cntf);
+        #50;
+        $finish;
     end    
 
-    task stimulus();
-        reg A, B;
-        begin 
-            A   = $random;
-            B   = $random;
-            a   =   A;
-            b   =   B;
-
-
-            new_sum = A + B;
-        end
-    endtask
 endmodule

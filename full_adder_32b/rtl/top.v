@@ -1,7 +1,7 @@
 module top (
-    input [31:0] a,
-    input [31:0] b,
-    output [31:0] sum
+    input wire [31:0] a,
+    input wire [31:0] b,
+    output wire [31:0] sum
 );
     wire c;
      add16 add16_0 (
